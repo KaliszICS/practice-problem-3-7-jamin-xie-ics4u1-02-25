@@ -4,24 +4,59 @@ public class PracticeProblem {
 
 	}
 
-	public static void q1() {
-		//Write question 1 code here
+	public static int searchMazeMoves(String[][] arr) {
+		int row = arr.length - 1;
+		int col = 0;
+		int move = 0;
+
+		move = mazeHelper(arr, row, col, move);
+		
+		return move;
 	}
 
-	public static void q2() {
-		//Write question 2 code here
-	}
+	public static int mazeHelper(String[][] arr, int row, int col, int move) {
+		if (row == -1 || col == -1 || row == arr.length || col == arr[row].length || arr[row][col].equals("*")) {
+			return -1;
+		}
 
-	public static void q3() {
-		//Write question 3 code here
-	}
+		if (arr[row][col].equals("F")) {
+			return move;
+		}
 
-	public static void q4() {
-		//Write question 4 code here
-	}
+		String tempSpace = arr[row][col];
+		arr[row][col] = "*";
+		move++;
 
-	public static void q5() {
-		//Write question 5 code here
-	}
+		int up = mazeHelper(arr, row, col + 1, move);
+		int down = mazeHelper(arr, row, col - 1, move);
+		int right = mazeHelper(arr, row + 1, col, move);
+		int left = mazeHelper(arr, row - 1, col, move);
 
+		if (up != -1) {
+			if (up > left && left != -1) {
+				up = left;
+			}
+		} else {
+			up = left;
+		}
+
+		if (down != -1) {
+			if (down > right && right != -1) {
+				down = right;
+			}
+		} else {
+			down = right;
+		}
+
+		if (down != -1) {
+			if (down > up && up != -1) {
+				down = up;
+			}
+		} else {
+			down = up;
+		}
+		move = down;
+		arr[row][col] = tempSpace;
+		return move;
+	}
 }
